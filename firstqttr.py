@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtWidgets import QLabel, QLCDNumber, QLineEdit
+import math
 
 
 class Example(QWidget):
@@ -9,7 +10,7 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(500, 500, 500, 200)
+        self.setGeometry(500, 500, 600, 600)
         self.setWindowTitle('Пятая программа')
 
         # self.btn = QPushButton('Расчитать', self)
@@ -21,6 +22,36 @@ class Example(QWidget):
         self.nol.resize(self.nol.sizeHint())
         self.nol.move(300, 140)
         self.nol.clicked.connect(self.no)
+
+        self.umn = QPushButton('*', self)
+        self.umn.resize(self.umn.sizeHint())
+        self.umn.move(200, 170)
+        self.umn.clicked.connect(self.umno)
+
+        self.minu = QPushButton('-', self)
+        self.minu.resize(self.minu.sizeHint())
+        self.minu.move(500, 170)
+        self.minu.clicked.connect(self.minus)
+
+        self.plu = QPushButton('+', self)
+        self.plu.resize(self.plu.sizeHint())
+        self.plu.move(300, 170)
+        self.plu.clicked.connect(self.plus)
+
+        self.deleni = QPushButton('/', self)
+        self.deleni.resize(self.deleni.sizeHint())
+        self.deleni.move(400, 170)
+        self.deleni.clicked.connect(self.delenie)
+
+        self.fact = QPushButton('!', self)
+        self.fact.resize(self.fact.sizeHint())
+        self.fact.move(300, 200)
+        self.fact.clicked.connect(self.factorial)
+
+        self.kor = QPushButton('√', self)
+        self.kor.resize(self.kor.sizeHint())
+        self.kor.move(200, 200)
+        self.kor.clicked.connect(self.koren)
 
         self.odin = QPushButton('1', self)
         self.odin.resize(self.odin.sizeHint())
@@ -52,6 +83,11 @@ class Example(QWidget):
         self.shest.move(400, 80)
         self.shest.clicked.connect(self.sh)
 
+        self.clean = QPushButton('C', self)
+        self.clean.resize(self.shest.sizeHint())
+        self.clean.move(200, 140)
+        self.clean.clicked.connect(self.c)
+
         self.sem = QPushButton('7', self)
         self.sem.resize(self.sem.sizeHint())
         self.sem.move(200, 110)
@@ -66,6 +102,11 @@ class Example(QWidget):
         self.deviat.resize(self.deviat.sizeHint())
         self.deviat.move(400, 110)
         self.deviat.clicked.connect(self.de)
+
+        self.ent = QPushButton('Enter', self)
+        self.ent.resize(self.ent.sizeHint())
+        self.ent.move(400, 140)
+        self.ent.clicked.connect(self.en)
 
         self.label = QLabel(self)
         self.label.setText("ᗰนℋน ҠᗩልѢҠɣልя⍑ℴ℘")
@@ -83,7 +124,15 @@ class Example(QWidget):
         self.LCF_umn = QLCDNumber(self)
         self.LCF_umn.move(110, 140)
 
+        self.LCK_kor = QLCDNumber(self)
+        self.LCK_kor.move(110, 170)
+
+        self.LCFa_fact = QLCDNumber(self)
+        self.LCFa_fact.move(110, 200)
+
         self.count = 0
+
+        self.qw = 0
 
         #self.fch = QLabel(self)
         #self.fch.setText("Введите первое число: ")
@@ -104,6 +153,8 @@ class Example(QWidget):
 
         self.x = 40
 
+        self.chisla=[]
+
 
         self.s = QLabel(self)
         self.s.setText("Сумма:")
@@ -121,14 +172,55 @@ class Example(QWidget):
         self.u.setText("Умножение:")
         self.u.move(5, 140)
 
+        self.k = QLabel(self)
+        self.k.setText("Корень:")
+        self.k.move(5, 170)
+
+        self.f = QLabel(self)
+        self.f.setText("Факториал:")
+        self.f.move(5, 200)
+
         self.fch = QLabel(self)
         self.fch.move(40,30)
+
+    def umno(self):
+        self.LCF_umn.display(int(self.chisla[0])*int(self.chisla[1]))
+
+    def minus(self):
+        self.LCA_raz.display(int(self.chisla[0])-int(self.chisla[1]))
+
+    def plus(self):
+        self.LCD_summ.display(int(self.chisla[0])+int(self.chisla[1]))
+
+    def delenie(self):
+        self.LCS_delen.display(int(self.chisla[0])/int(self.chisla[1]))
+
+    def koren(self):
+
+        self.LCK_kor.display(math.sqrt(int(self.chisla[0])))
+
+    def factorial(self):
+         self.LCFa_fact.display(math.factorial(int(self.chisla[0])))
+
+
+    def c(self):
+        self.chisla = []
+        self.su = []
+        self.fch.setText('')
+        self.LCF_umn.display(self.qw)
+        self.LCA_raz.display(self.qw)
+        self.LCS_delen.display(self.qw)
+        self.LCD_summ.display(self.qw)
+        self.LCK_kor.display(self.qw)
+        self.LCFa_fact.display(self.qw)
+
 
     def no(self):
 
         self.su.append('0')
         self.fch.setText(''.join(self.su))
         self.fch.adjustSize()
+
 
 
     def od(self):
@@ -150,6 +242,18 @@ class Example(QWidget):
         self.su.append('3')
         self.fch.setText(''.join(self.su))
         self.fch.adjustSize()
+
+
+    def en(self):
+        self.chisla.append(''.join(self.su))
+        self.su=[]
+        self.fch.setText('')
+
+    # def c(self):
+    #     self.chisla=[]
+    #     self.su=[]
+    #     self.fch.setText('')
+    #     self.LCF_umn.display(self.qw)
 
 
     def ch(self):
